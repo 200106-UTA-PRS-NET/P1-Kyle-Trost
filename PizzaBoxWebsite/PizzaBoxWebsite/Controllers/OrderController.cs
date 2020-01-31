@@ -152,12 +152,22 @@ namespace PizzaBoxWebsite.Controllers
                 return View();
         }
 
+        public IActionResult CancelOrder()
+        {
+            EmptyPizzaList();
+            return View("../Home/WelcomeUser");
+        }
+
         public void EmptyPizzaList()
         {
-            for(int x = 0; x < Globals.pizzaList.Count; x++)
-            {
-                Globals.pizzaList.RemoveAt(x);
-            }
+            //int count = Globals.pizzaList.Count;
+
+            //for(int x = 0; x < count; x++)
+            //{
+            //    Globals.pizzaList.RemoveAt(x);
+            //}
+
+            Globals.pizzaList.RemoveRange(0, Globals.pizzaList.Count);
         }
 
         public ViewResult ExceedMaxCostWarning()
