@@ -19,12 +19,16 @@ namespace PizzaBoxWebsite.Controllers
         private readonly PizzaBoxDbContext _context;
 
         private readonly IPizzasSoldRepository<PizzaSold> _pizzasSoldRepo;
+        private readonly ISizeRepository<Size> _sizeRepo;
+        private readonly ICrustTypeRepository<CrustType> _crustRepo;
 
-        public PizzasSoldController(PizzaBoxDbContext context)
+        public PizzasSoldController(PizzaBoxDbContext context, IPizzasSoldRepository<PizzaSold> pizzasSoldRepo, ISizeRepository<Size> sizeRepo, ICrustTypeRepository<CrustType> crustRepo)
         {
             _context = context;
 
-            _pizzasSoldRepo = Dependencies.CreatePizzasSoldRepository();
+            _pizzasSoldRepo = pizzasSoldRepo;
+            _sizeRepo = sizeRepo;
+            _crustRepo = crustRepo;
         }
 
         // GET: PizzasSolds
@@ -104,7 +108,7 @@ namespace PizzaBoxWebsite.Controllers
 
         public IActionResult CreatePizzaPartial()
         {
-            ViewData["PizzaName"] = new SelectList(_context.PresetPizzas, "PresetId", "PresetName");
+            ViewData["PizzaName"] = new SelectList(_context.PresetPizzas, "PresetName", "PresetName");
             ViewData["PizzaCrust"] = new SelectList(_context.CrustTypes, "CrustId", "CrustName");
             ViewData["PizzaSize"] = new SelectList(_context.Sizes, "SizeId", "SizeName");
             return View();
@@ -120,12 +124,24 @@ namespace PizzaBoxWebsite.Controllers
                 newPizza.PizzaSize = pizza.PizzaSize;
                 newPizza.PizzaCrust = pizza.PizzaCrust;
 
+                ViewData["PizzaName"] = new SelectList(_context.PresetPizzas, "PresetName", "PresetName", newPizza.PizzaName);
+
+                newPizza.TotalCost = CalculateTotalCost(newPizza.PizzaSize, newPizza.PizzaCrust);
+
                 Globals.pizzaList.Add(newPizza);
 
                 return RedirectToAction(nameof(PizzaAdded));
             }
             else
                 return View();
+        }
+
+        private decimal CalculateTotalCost(int? size, int? crust)
+        {
+            var sizeCost = _sizeRepo.GetSizes(size).FirstOrDefault().SizeCost;
+            var crustCost = _crustRepo.GetCrustTypes(crust).FirstOrDefault().CrustCost;
+
+            return sizeCost + crustCost;
         }
 
         public IActionResult PizzaAdded()

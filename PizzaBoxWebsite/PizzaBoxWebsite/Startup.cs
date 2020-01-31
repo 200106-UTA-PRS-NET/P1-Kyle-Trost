@@ -34,11 +34,12 @@ namespace PizzaBoxWebsite
             services.AddDbContext<PizzaBoxDbContext>(options =>
                 options.UseSqlServer(connectionString));
             services.AddTransient<IUserRepository<User>, UserRepository>();
-            services.AddTransient<IStoreRepository<Store>, StoreRepository>();
+            services.AddScoped<IStoreRepository<Store>, StoreRepository>();
             services.AddTransient<IOrderRepository<Order>, OrderRepository>();
             services.AddScoped<ISizeRepository<Size>, SizeRepository>();
             services.AddScoped<ICrustTypeRepository<CrustType>, CrustTypeRepository>();
             services.AddScoped<IPizzasSoldRepository<PizzaSold>, PizzasSoldRepository>();
+            services.AddScoped<IStoreRepository<Store>, StoreRepository>();
 
             services.AddControllersWithViews();
         }

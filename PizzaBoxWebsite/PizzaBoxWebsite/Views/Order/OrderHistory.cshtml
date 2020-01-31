@@ -8,21 +8,21 @@
 
 <h1>Order History</h1>
 
-<p>
+@*<p>
     <a asp-action="CreateOrder">Create New</a>
-</p>
+</p>*@
 <table class="table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.OrderTimestamp)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.Store)
-            </th>
-            <th>
+            </th>*@
+            @*<th>
                 @Html.DisplayNameFor(model => model.User)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.TotalCost)
             </th>
@@ -35,12 +35,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.OrderTimestamp)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Store.StoreLocation)
-            </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.User.UserName)
-            </td>
+            </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.TotalCost)
             </td>

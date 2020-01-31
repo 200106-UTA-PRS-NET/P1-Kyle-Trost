@@ -14,12 +14,6 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalCost)
-        </dt>
-        <dd class="col-sm-10">
-            $@Html.DisplayFor(model => model.TotalCost)
-        </dd>
-        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.OrderTimestamp)
         </dt>
         <dd class="col-sm-10">
@@ -29,28 +23,25 @@
             @Html.DisplayNameFor(model => model.Store)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Store.StoreLocation)
+            @Globals.storeRepo.GetStores(Model.StoreId).FirstOrDefault().StoreLocation
         </dd>
-        <dt class="col-sm-2">
+        @*<dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.User)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.User.UserName)
-        </dd>
-        <dt class="col-sm-2">
-            Itemized Receipt
-        </dt>
+        </dd>*@
     </dl>
     <table class="table">
         @foreach (var item in Model.PizzasSold)
         {
             <tr>
                 <p>
-                    @Html.DisplayFor(modeItem => item.PizzaSize)
+                    @Globals.sizeRepo.GetSizes(item.PizzaSize).FirstOrDefault().SizeName
                     @Html.DisplayFor(modelItem => item.PizzaName)
                     with
-                    @Html.DisplayFor(modelItem => item.PizzaCrust) 
-                    ($@Html.DisplayFor(modelItem => item.PizzaCrustNavigation.CrustCost))
+                    @Globals.crustRepo.GetCrustTypes(item.PizzaCrust).FirstOrDefault().CrustName
+                    ($@Globals.crustRepo.GetCrustTypes(item.PizzaCrust).FirstOrDefault().CrustCost)
                     crust:
                     $@Html.DisplayFor(modelItem => item.TotalCost)
                 </p>
@@ -60,6 +51,9 @@
         <tr>
             <p>
                 Sales Tax: $@(grossCost * Globals.SALES_TAX)
+            </p>
+            <p>
+                Total Cost: $@Html.DisplayFor(model => model.TotalCost)
             </p>
         </tr>
     </table>

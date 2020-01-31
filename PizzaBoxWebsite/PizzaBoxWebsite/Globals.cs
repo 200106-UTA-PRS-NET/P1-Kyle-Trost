@@ -21,6 +21,7 @@ namespace PizzaBoxWebsite
 
         public static ISizeRepository<Size> sizeRepo = Dependencies.CreateSizeRepository();
         public static ICrustTypeRepository<CrustType> crustRepo = Dependencies.CreateCrustTypeRepository();
+        public static IStoreRepository<Store> storeRepo = Dependencies.CreateStoreRepository();
 
         static NumberFormatInfo nfi = new NumberFormatInfo();
 

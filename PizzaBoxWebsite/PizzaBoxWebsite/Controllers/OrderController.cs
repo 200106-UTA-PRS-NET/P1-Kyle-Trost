@@ -20,9 +20,10 @@ namespace PizzaBoxWebsite.Controllers
         private readonly ISizeRepository<Size> _sizeRepo;
         private readonly ICrustTypeRepository<CrustType> _crustRepo;
         private readonly IPizzasSoldRepository<PizzaSold> _pizzaRepo;
+        private readonly IStoreRepository<Store> _storeRepo;
 
         public OrderController(PizzaBoxDbContext context, IOrderRepository<Order> orderRepo, IPizzasSoldRepository<PizzaSold> pizzaRepo,
-            ISizeRepository<Size> sizeRepo, ICrustTypeRepository<CrustType> crustRepo)
+            ISizeRepository<Size> sizeRepo, ICrustTypeRepository<CrustType> crustRepo, IStoreRepository<Store> storeRepo)
         {
             _context = context;
 
@@ -30,6 +31,7 @@ namespace PizzaBoxWebsite.Controllers
             _sizeRepo = sizeRepo;
             _crustRepo = crustRepo;
             _pizzaRepo = pizzaRepo;
+            _storeRepo = storeRepo;
         }
 
         // GET: Order
@@ -43,24 +45,6 @@ namespace PizzaBoxWebsite.Controllers
         // GET: Order/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //var orders = await _context.Orders
-            //    .Include(o => o.Store)
-            //    .Include(o => o.User)
-            //    .Include(o => o.PizzasSold)
-            //    .FirstOrDefaultAsync(m => m.OrderId == id);
-
-            //if (orders == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //return View(orders);
-
             if (id == null)
                 return NotFound();
 
@@ -70,12 +54,13 @@ namespace PizzaBoxWebsite.Controllers
             ovm.OrderId = repoOrder.OrderId;
             ovm.StoreId = repoOrder.StoreId;
             ovm.UserId = repoOrder.UserId;
+            ovm.OrderTimestamp = repoOrder.OrderTimestamp;
+            ovm.TotalCost = repoOrder.TotalCost;
 
-            foreach(var item in _pizzaRepo.GetPizzasSold(ovm.OrderId))
+            foreach(var item in _pizzaRepo.GetPizzasSold(orderId:ovm.OrderId))
             {
                 ovm.PizzasSold.Add(Mapper.MapPizzaSold(item));
             }
-            
 
             if (repoOrder == null)
                 return NotFound();
@@ -97,7 +82,9 @@ namespace PizzaBoxWebsite.Controllers
 
         public ViewResult OrderHistory()
         {
-            var orders = _orderRepo.GetOrders(userId: Globals.CurrentUser.UserId);
+            var orders = (Globals.CurrentUser.StoreId == null) ? _orderRepo.GetOrders(userId: Globals.CurrentUser.UserId)
+                                                               : _orderRepo.GetOrders(storeId: Globals.CurrentUser.StoreId);
+
             var ovm = new List<OrderViewModel>();
 
             foreach(var item in orders)
@@ -115,24 +102,42 @@ namespace PizzaBoxWebsite.Controllers
             return View(ovm);
         }
 
-        public ViewResult ConfirmOrder()
+        public IActionResult ConfirmOrder()
         {
+            ViewData["StoreId"] = new SelectList(_context.Stores, "StoreId", "StoreLocation");
             return View();
         }
 
         [HttpPost]
-        public ViewResult ConfirmOrder(OrderViewModel order)
+        public IActionResult ConfirmOrder(OrderViewModel order)
         {
+            //ViewData["StoreLocation"] = new SelectList(_context.Stores, "StoreId", "StoreId", order.StoreId);
+
             if (ModelState.IsValid)
             {
                 var newOrder = new Order();
                 newOrder.UserId = Globals.CurrentUser.UserId;
-                newOrder.StoreId = order.StoreId;
+                newOrder.StoreId = order.StoreId /*ViewBag.StoreLocation*/;
 
-                foreach(var item in Globals.pizzaList)
+                ViewData["StoreId"] = new SelectList(_context.Stores, "StoreId", "StoreLocation", newOrder.StoreId);
+
+                decimal? grossCost = 0.00M;
+
+                foreach (var item in Globals.pizzaList)
                 {
                     newOrder.PizzasSold.Add(Mapper.MapPizzaSold(item));
+                    grossCost += item.TotalCost;
                 }
+
+                decimal? salesTax = grossCost * Globals.SALES_TAX;
+                newOrder.TotalCost = grossCost + salesTax;
+
+                if(newOrder.TotalCost > Globals.MAX_ORDER_COST)
+                {
+                    return View(nameof(ExceedMaxCostWarning));
+                }
+
+                EmptyPizzaList();
 
                 _orderRepo.AddOrder(newOrder);
 
@@ -140,6 +145,26 @@ namespace PizzaBoxWebsite.Controllers
             }
             else
                 return View();
+        }
+
+        public void EmptyPizzaList()
+        {
+            for(int x = 0; x < Globals.pizzaList.Count; x++)
+            {
+                Globals.pizzaList.RemoveAt(x);
+            }
+        }
+
+        public ViewResult ExceedMaxCostWarning()
+        {
+            EmptyPizzaList();
+            return View();
+        }
+
+        public ViewResult TimespanWarning()
+        {
+            EmptyPizzaList();
+            return View();
         }
 
         public ViewResult CreateOrder()
