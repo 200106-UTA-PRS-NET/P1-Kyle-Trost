@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PizzaBox.Domain", "..\..\P0
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PizzaBox.Storing", "..\..\P0-Kyle-Trost\PizzaBox\PizzaBox.Storing\PizzaBox.Storing.csproj", "{4E242C5E-AB38-498E-B741-5EA9E1639D3C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaBox.Testing", "PizzaBox.Testing\PizzaBox.Testing.csproj", "{98BB776A-8E36-4586-9E9E-2457B3E5F173}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{4E242C5E-AB38-498E-B741-5EA9E1639D3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E242C5E-AB38-498E-B741-5EA9E1639D3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E242C5E-AB38-498E-B741-5EA9E1639D3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98BB776A-8E36-4586-9E9E-2457B3E5F173}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98BB776A-8E36-4586-9E9E-2457B3E5F173}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98BB776A-8E36-4586-9E9E-2457B3E5F173}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98BB776A-8E36-4586-9E9E-2457B3E5F173}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
