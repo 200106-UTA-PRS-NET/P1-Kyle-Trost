@@ -15,15 +15,27 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="StoreId" class="control-label"></label>
-                <select asp-for="StoreId" class ="form-control" asp-items="ViewBag.StoreId"></select>
+                <select asp-for="StoreId" class="form-control" asp-items="ViewBag.StoreId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="PizzasSold" class="control-label"></label>
+                <select asp-for="PizzasSold" class="form-control" asp-items="ViewBag.PizzaType"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="PizzasSold" class="control-label"></label>
+                <select asp-for="PizzasSold" class="form-control" asp-items="ViewBag.PizzaSize"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="PizzasSold" class="control-label"></label>
+                <select asp-for="PizzasSold" class="form-control" asp-items="ViewBag.PizzaCrust"></select>
             </div>
             <div class="form-group">
                 <label asp-for="TotalCost" class="control-label"></label>
-                <input asp-for="TotalCost" class="form-control" />
+                <label asp-for="TotalCost" class="control-label" >$@Html.DisplayFor(model => model.TotalCost)</label>
                 <span asp-validation-for="TotalCost" class="text-danger"></span>
             </div>
             <div class="form-group">

@@ -1,8 +1,10 @@
-﻿@model PizzaBox.Domain.Models.Orders
+﻿@*@model PizzaBox.Domain.Models.Orders*@
+@model OrderViewModel
 
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    decimal? grossCost = 0.00M;
 }
 
 <h1>Details</h1>
@@ -15,7 +17,7 @@
             @Html.DisplayNameFor(model => model.TotalCost)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TotalCost)
+            $@Html.DisplayFor(model => model.TotalCost)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.OrderTimestamp)
@@ -27,7 +29,7 @@
             @Html.DisplayNameFor(model => model.Store)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Store.StoreId)
+            @Html.DisplayFor(model => model.Store.StoreLocation)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.User)
@@ -36,17 +38,33 @@
             @Html.DisplayFor(model => model.User.UserName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PizzasSold)
+            Itemized Receipt
         </dt>
-        @foreach(var item in Model.PizzasSold)
-        {
-        <dd>
-            @Html.DisplayFor(modelItem => item.PizzaCrust)
-        </dd>
-        }
     </dl>
+    <table class="table">
+        @foreach (var item in Model.PizzasSold)
+        {
+            <tr>
+                <p>
+                    @Html.DisplayFor(modeItem => item.PizzaSize)
+                    @Html.DisplayFor(modelItem => item.PizzaName)
+                    with
+                    @Html.DisplayFor(modelItem => item.PizzaCrust) 
+                    ($@Html.DisplayFor(modelItem => item.PizzaCrustNavigation.CrustCost))
+                    crust:
+                    $@Html.DisplayFor(modelItem => item.TotalCost)
+                </p>
+            </tr>
+            grossCost += item.TotalCost;
+        }
+        <tr>
+            <p>
+                Sales Tax: $@(grossCost * Globals.SALES_TAX)
+            </p>
+        </tr>
+    </table>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.OrderId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    @*<a asp-action="Edit" asp-route-id="@Model.OrderId">Edit</a> |*@
+    <a asp-action="OrderHistory">Back to List</a>
 </div>

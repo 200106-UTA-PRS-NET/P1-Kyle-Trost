@@ -1,14 +1,15 @@
-﻿@model IEnumerable<PizzaBox.Domain.Models.Orders>
+﻿@*@model IEnumerable<PizzaBox.Domain.Models.Orders>*@
+@model IEnumerable<OrderViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Order History";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Order History</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="CreateOrder">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -44,11 +45,14 @@
                 @Html.DisplayFor(modelItem => item.TotalCost)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
+                @*<a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |*@
+                <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> @*|*@
+                @*<a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>*@
             </td>
         </tr>
 }
     </tbody>
 </table>
+<p>
+    <a asp-action="WelcomeUser" asp-controller="Home">Back</a>
+</p>

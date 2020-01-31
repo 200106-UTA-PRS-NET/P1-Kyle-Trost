@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using PizzaBox.Domain.Abstracts;
 using PizzaBox.Domain.Interfaces;
 using PizzaBox.Domain.Models;
+using PizzaBoxWebsite.Models;
 
 namespace PizzaBoxWebsite.Controllers
 {
@@ -28,11 +29,11 @@ namespace PizzaBoxWebsite.Controllers
         }
 
         // GET: api/Stores
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Stores>>> GetStores()
-        {
-            return await _context.Stores.ToListAsync();
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Stores>>> GetStores()
+        //{
+        //    return await _context.Stores.ToListAsync();
+        //}
 
         //[HttpGet]
         //public IEnumerable<Store> GetAllStores()
@@ -40,9 +41,21 @@ namespace PizzaBoxWebsite.Controllers
         //    return _storeRepo.GetStores();
         //}
         //[HttpGet]
-        public ActionResult Index()
+        public ActionResult StoreLocations()
         {
-            return View("Index", _storeRepo.GetStores());
+            var svm = new List<StoreViewModel>();
+            var stores = _storeRepo.GetStores();
+
+            foreach(var item in stores)
+            {
+                var store = new StoreViewModel();
+                store.StoreId = item.StoreId;
+                store.StoreLocation = item.StoreLocation;
+                svm.Add(store);
+            }
+
+            return View(svm);
+            //return View(_storeRepo.GetStores());
         }
 
         // GET: api/Stores/5

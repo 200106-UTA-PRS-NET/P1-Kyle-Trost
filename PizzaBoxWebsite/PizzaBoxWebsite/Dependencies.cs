@@ -21,15 +21,14 @@ namespace PizzaBoxWebsite
             var optionsBuilder = new DbContextOptionsBuilder<PizzaBoxDbContext>();
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("PizzaBoxDb"));
             var options = optionsBuilder.Options;
-            /*var db =*/
             return new PizzaBoxDbContext(options);
         }
 
-        //public static ICrustTypeRepository<CrustType> CreateCrustTypeRepository()
-        //{
-        //    var db = GetDbContext();
-        //    return new CrustTypeRepository(db);
-        //}
+        public static ICrustTypeRepository<CrustType> CreateCrustTypeRepository()
+        {
+            var db = GetDbContext();
+            return new CrustTypeRepository(db);
+        }
 
         public static IOrderRepository<Order> CreateOrderRepository()
         {
@@ -37,23 +36,23 @@ namespace PizzaBoxWebsite
             return new OrderRepository(db);
         }
 
-        //public static IPizzasSoldRepository<PizzaSold> CreatePizzasSoldRepository()
-        //{
-        //    var db = GetDbContext();
-        //    return new PizzasSoldRepository(db);
-        //}
+        public static IPizzasSoldRepository<PizzaSold> CreatePizzasSoldRepository()
+        {
+            var db = GetDbContext();
+            return new PizzasSoldRepository(db);
+        }
 
-        //public static IPresetPizzaRepository<PresetPizza> CreatePresetPizzaRespository()
-        //{
-        //    var db = GetDbContext();
-        //    return new PresetPizzaRepository(db);
-        //}
+        public static IPresetPizzaRepository<PresetPizza> CreatePresetPizzaRespository()
+        {
+            var db = GetDbContext();
+            return new PresetPizzaRepository(db);
+        }
 
-        //public static ISizeRepository<Size> CreateSizeRepository()
-        //{
-        //    var db = GetDbContext();
-        //    return new SizeRepository(db);
-        //}
+        public static ISizeRepository<Size> CreateSizeRepository()
+        {
+            var db = GetDbContext();
+            return new SizeRepository(db);
+        }
 
         public static IStoreRepository<Store> CreateStoreRepository()
         {
@@ -63,15 +62,7 @@ namespace PizzaBoxWebsite
 
         public static IUserRepository<User> CreateUserRepository()
         {
-            //var configurBuilder = new ConfigurationBuilder()
-            //                .SetBasePath(Directory.GetCurrentDirectory())
-            //                .AddJsonFile("Secrets.json", optional: true, reloadOnChange: true);
-
-            //IConfigurationRoot configuration = configurBuilder.Build();
-            //var optionsBuilder = new DbContextOptionsBuilder<PizzaBoxDbContext>();
-            //optionsBuilder.UseSqlServer(configuration.GetConnectionString("PizzaBoxDb"));
-            //var options = optionsBuilder.Options;
-            var db = /*new PizzaBoxDbContext(options)*/ GetDbContext();
+            var db = GetDbContext();
             return new UserRepository(db);
         }
     }

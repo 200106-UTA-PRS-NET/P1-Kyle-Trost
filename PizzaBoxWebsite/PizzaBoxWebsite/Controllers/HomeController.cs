@@ -20,7 +20,7 @@ namespace PizzaBoxWebsite.Controllers
         private readonly IUserRepository<User> _userRepo;
         private readonly IStoreRepository<Store> _storeRepo;
 
-        private readonly SignInManager<IdentityUser> signInManager;
+        //private readonly SignInManager<IdentityUser> signInManager;
 
         public string Username { get; set; }
         public string Password { get; set; }
@@ -38,26 +38,45 @@ namespace PizzaBoxWebsite.Controllers
             return View();
         }
 
-        public ViewResult GoToSignIn()
+        public ViewResult SignIn()
         {
             return View("SignIn");
         }
 
-        [HttpPost]
-        public ActionResult SignIn(string userName, string passWord)
+        public ActionResult SignOut()
         {
-            if(_userRepo.GetUsers(user: userName, pass: passWord).Any())
-            {
-                //return View(userName, pass);
-                return View("WelcomeUser");
-            }
+            Globals.CurrentUser = null;
+            return View("SignIn");
+        }
 
+        [HttpPost]
+        public ActionResult SignIn(UserViewModel user)
+        {
+            if (ModelState.IsValid)
+            {
+                var tempUser = _userRepo.GetUsers(user.Username, user.Password).FirstOrDefault();
+
+                if (tempUser != null)
+                {
+                    //TempData["User"] = tempUser;
+                    Globals.CurrentUser = tempUser;
+                    return RedirectToAction("WelcomeUser");
+                }
+                else
+                    return View();
+            }
+            else
+                return View();
+        }
+
+        public ActionResult WelcomeUser()
+        {
             return View();
         }
 
         public ViewResult StoreLocations()
         {
-            return View("StoreLocations", _storeRepo.GetStores());
+            return View(_storeRepo.GetStores());
         }
 
         public IActionResult Privacy()

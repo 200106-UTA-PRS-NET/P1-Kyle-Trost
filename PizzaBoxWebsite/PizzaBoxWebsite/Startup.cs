@@ -35,6 +35,10 @@ namespace PizzaBoxWebsite
                 options.UseSqlServer(connectionString));
             services.AddTransient<IUserRepository<User>, UserRepository>();
             services.AddTransient<IStoreRepository<Store>, StoreRepository>();
+            services.AddTransient<IOrderRepository<Order>, OrderRepository>();
+            services.AddScoped<ISizeRepository<Size>, SizeRepository>();
+            services.AddScoped<ICrustTypeRepository<CrustType>, CrustTypeRepository>();
+            services.AddScoped<IPizzasSoldRepository<PizzaSold>, PizzasSoldRepository>();
 
             services.AddControllersWithViews();
         }
@@ -63,7 +67,7 @@ namespace PizzaBoxWebsite
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=SignIn}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "StoreLocations",
                     pattern: "{controller=Home}/{action=StoreLocations}");

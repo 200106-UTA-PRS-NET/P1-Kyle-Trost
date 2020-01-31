@@ -1,15 +1,15 @@
-﻿@model IEnumerable<PizzaBox.Domain.Abstracts.Store>
+﻿@model IEnumerable<StoreViewModel>
 
 @{
     ViewData["Title"] = "View";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>View</h1>
+<h1>Store Locations</h1>
 
-<p>
+@*<p>
     <a asp-action="Create">Create New</a>
-</p>
+</p>*@
 <table class="table">
     <thead>
         <tr>
@@ -25,11 +25,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.StoreLocation)
             </td>
-            <td>
+            @*<td>
                 <a asp-action="Edit" asp-route-id="@item.StoreId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.StoreId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.StoreId">Delete</a>
-            </td>
+            </td>*@
         </tr>
 }
     </tbody>

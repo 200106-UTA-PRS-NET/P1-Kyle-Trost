@@ -19,10 +19,6 @@
     <ProjectReference Include="..\..\..\P0-Kyle-Trost\PizzaBox\PizzaBox.Storing\PizzaBox.Storing.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Store\" />
-  </ItemGroup>
-
 
 
 </Project>

@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewData["Title"] = "Pizza Added";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Pizza Added to Cart!</h1>
+<p>
+    <a asp-action="CreatePizzaPartial">Create another pizza</a>
+</p>
+<p>
+    <a asp-action="ConfirmOrder" asp-controller="Order">Go to checkout</a>
+</p>
+

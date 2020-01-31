@@ -1,0 +1,43 @@
+﻿@model OrderViewModel
+@{
+    ViewData["Title"] = "ConfirmOrder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    decimal? grossCost = 0.00M;
+    //PizzaBox.Domain.Interfaces.ISizeRepository<PizzaBox.Domain.Abstracts.Size> sizeRepo = Dependencies.CreateSizeRepository();
+}
+
+<h1>Confirm Your Order</h1>
+<div class="form-group">
+    <table class="table">
+        @foreach (var item in Globals.pizzaList)
+        {
+            <tr>
+                <p>
+                    @*@Html.DisplayFor(modelItem => item.PizzaSize)*@
+                    @Globals.sizeRepo.GetSizes(item.PizzaSize).FirstOrDefault().SizeName
+                    @Html.DisplayFor(modelItem => item.PizzaName)
+                    with
+                    @*@Html.DisplayFor(modelItem => item.PizzaCrust)*@
+                    @Globals.crustRepo.GetCrustTypes(item.PizzaCrust).FirstOrDefault().CrustName
+                    @*($@Html.DisplayFor(modelItem => item.PizzaCrustCost))*@
+                    crust:
+                    $@Html.DisplayFor(modelItem => item.TotalCost)
+                </p>
+            </tr>
+            grossCost += item.TotalCost;
+        }
+        <tr>
+            <p>
+                Sales Tax: $@(grossCost * Globals.SALES_TAX)
+            </p>
+            <p>
+                Total Cost: $@grossCost
+            </p>
+        </tr>
+    </table>
+</div>
+<form asp-action="ConfirmOrder" method="post">
+    <input type="submit" value="Confirm" class="btn btn-primary" asp-controller="Order"/>
+    <input type="submit" value="Cancel" class="btn btn-primary" asp-action="WelcomeUser" asp-controller="Home" />
+</form>
+
