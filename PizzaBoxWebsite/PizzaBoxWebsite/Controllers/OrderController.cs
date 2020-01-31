@@ -132,12 +132,17 @@ namespace PizzaBoxWebsite.Controllers
                 decimal? salesTax = grossCost * Globals.SALES_TAX;
                 newOrder.TotalCost = grossCost + salesTax;
 
-                if(newOrder.TotalCost > Globals.MAX_ORDER_COST)
+                EmptyPizzaList();
+
+                if (newOrder.TotalCost > Globals.MAX_ORDER_COST)
                 {
                     return View(nameof(ExceedMaxCostWarning));
                 }
 
-                EmptyPizzaList();
+                if(!CanOrderNow(newOrder.StoreId))
+                {
+                    return View(nameof(TimespanWarning));
+                }
 
                 _orderRepo.AddOrder(newOrder);
 
@@ -157,13 +162,29 @@ namespace PizzaBoxWebsite.Controllers
 
         public ViewResult ExceedMaxCostWarning()
         {
-            EmptyPizzaList();
             return View();
+        }
+
+        public bool CanOrderNow(int? id)
+        {
+            var orders = _orderRepo.GetOrders(storeId: id);
+
+            if (orders.Any())
+            {
+                var lastOrderTime = orders.FirstOrDefault().OrderTimestamp;
+                var timeSpan = DateTime.Now - lastOrderTime.Value;
+
+                if (timeSpan.Days < Globals.ORDER_INTERVAL_DAYS)
+                    return false;
+                else
+                    return true;
+            }
+            else
+                return true;
         }
 
         public ViewResult TimespanWarning()
         {
-            EmptyPizzaList();
             return View();
         }
 
