@@ -10,7 +10,7 @@ namespace PizzaBox.Testing
         // Make sure size repository is not empty
         public void Test1()
         {
-            var sizeRepo = Dependencies.CreateSizeRepository();
+            var sizeRepo = new MockRepositorySize();
 
             Assert.NotEmpty(sizeRepo.GetSizes());
         }
@@ -19,7 +19,7 @@ namespace PizzaBox.Testing
         // Make sure crust type repository is not empty
         public void Test2()
         {
-            var crustRepo = Dependencies.CreateCrustTypeRepository();
+            var crustRepo = new MockRepositoryCrustType();
 
             Assert.NotEmpty(crustRepo.GetCrustTypes());
         }
@@ -28,7 +28,7 @@ namespace PizzaBox.Testing
         // Make sure preset pizza repository is not empty
         public void Test3()
         {
-            var presetRepo = Dependencies.CreatePresetPizzaRespository();
+            var presetRepo = new MockRepositoryPresetPizza();
 
             Assert.NotEmpty(presetRepo.GetPresetPizzas());
         }
@@ -37,7 +37,7 @@ namespace PizzaBox.Testing
         // Make sure user pizza repository is not empty
         public void Test4()
         {
-            var userRepo = Dependencies.CreateUserRepository();
+            var userRepo = new MockRepositoryUser();
 
             Assert.NotEmpty(userRepo.GetUsers());
         }
@@ -46,7 +46,7 @@ namespace PizzaBox.Testing
         // Make sure preset pizza repository is not empty
         public void Test5()
         {
-            var storeRepo = Dependencies.CreateStoreRepository();
+            var storeRepo = new MockRepositoryStore();
 
             Assert.NotEmpty(storeRepo.GetStores());
         }
@@ -55,7 +55,7 @@ namespace PizzaBox.Testing
         // Make sure passing -1 will get all stores
         public void Test6()
         {
-            var storeRepo = Dependencies.CreateStoreRepository();
+            var storeRepo = new MockRepositoryStore();
 
             Assert.NotEmpty(storeRepo.GetStores(-1));
         }
@@ -64,7 +64,7 @@ namespace PizzaBox.Testing
         // Make sure passing -1 will get all sizes
         public void Test7()
         {
-            var sizeRepo = Dependencies.CreateSizeRepository();
+            var sizeRepo = new MockRepositorySize();
 
             Assert.NotEmpty(sizeRepo.GetSizes(-1));
         }
@@ -73,7 +73,7 @@ namespace PizzaBox.Testing
         // Make sure passing -1 will get all crust types
         public void Test8()
         {
-            var crustRepo = Dependencies.CreateCrustTypeRepository();
+            var crustRepo = new MockRepositoryCrustType();
 
             Assert.NotEmpty(crustRepo.GetCrustTypes(-1));
         }
@@ -82,7 +82,7 @@ namespace PizzaBox.Testing
         // Make sure passing -1 will get all preset pizzas
         public void Test9()
         {
-            var presetRepo = Dependencies.CreatePresetPizzaRespository();
+            var presetRepo = new MockRepositoryPresetPizza();
 
             Assert.NotEmpty(presetRepo.GetPresetPizzas(-1));
         }
@@ -91,7 +91,7 @@ namespace PizzaBox.Testing
         // Make sure the user Joseph with password qwerty is in the mock repo
         public void Test10()
         {
-            var testUserRepo = new MockRepository();
+            var testUserRepo = new MockRepositoryUser();
 
             Assert.NotEmpty(testUserRepo.GetUsers("Joseph", "qwerty"));
         }

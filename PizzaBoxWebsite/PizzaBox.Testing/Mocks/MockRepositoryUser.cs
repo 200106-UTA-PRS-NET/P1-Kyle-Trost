@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace PizzaBox.Testing.Mocks
 {
-    public class MockRepository : IUserRepository<User>
+    public class MockRepositoryUser : IUserRepository<User>
     {
-        static IEnumerable<User> users = new List<User>()
+        static readonly IEnumerable<User> users = new List<User>()
         {
             new User()
             {
