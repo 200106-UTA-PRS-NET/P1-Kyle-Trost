@@ -10,25 +10,22 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  pathtosolution: 'PizzaBoxWebsite/'
+  pathtoproject: 'PizzaBoxWebsite/PizzaBoxWebsite'
+  pathtotest: 'PizzaBoxWebsite/PizzaBox.Testing'
 
 steps:
-- task: NuGetToolInstaller@1
+- script: 
+    dotnet build --configuration $(buildConfiguration)
+  workingDirectory: $(pathtosolution)
+  displayName: 'dotnet build $(buildConfiguration)'
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
-
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+- script: dotnet test
+    --configuration $(buildConfiguration)
+    --logger trx
+    --no-build
+    --results-directory $(Build.ArtifactStagingDirectory)/test/
+    /p:CollectCoverage=true
+  workingDirectory: $(pathtosolution)
+  displayName: 'dotnet test'
