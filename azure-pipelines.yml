@@ -16,6 +16,18 @@ variables:
   pathtotest: 'PizzaBoxWebsite/PizzaBox.Testing'
 
 steps:
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'SonarCloud connection 1'
+    organization: '$(SonarOrganization)'
+    scannerMode: 'MSBuild'
+    projectKey: 'TestToken1'
+    projectName: 'PizzaBoxWebsite'
+    extraProperties: |
+      sonar.cs.opencover.reportsPaths="$(Build.ArtifactStagingDirectory)/coverage/*"
+      sonar.cs.vstest.reportsPaths="$(Build.ArtifactStagingDirectory)/test/*.trx"
+      sonar.exclusions=**/wwwroot/lib/**/*
+
 - script: 
     dotnet build --configuration $(buildConfiguration)
   workingDirectory: $(pathtosolution)
@@ -29,3 +41,30 @@ steps:
     /p:CollectCoverage=true
   workingDirectory: $(pathtosolution)
   displayName: 'dotnet test'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: '$(pathtotest)'
+    workingDirectory: '$(pathtosolution)'
+
+- task: SonarCloudAnalyze@1
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    arguments: --configuration $(buildConfiguration)
+    publishWebProjects: true
+    zipAfterPublish: true
+    workingDirectory: '$(pathtosolution)'
+  displayName: 'dotnet publish + zip'
+
+# - task: AzureWebApp@1
+#   inputs:
+#     azureSubscription: 'Visual Studio Enterprise with MSDN(581982a8-2cbb-485e-b313-4da4b27d42f1)'
+#     appType: 'webAppLinux'
+#     appName: 'emsutapipeline'
+#     package: '$(System.DefaultWorkingDirectory)/**/*.zip'
