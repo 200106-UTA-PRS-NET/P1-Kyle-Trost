@@ -21,8 +21,8 @@ steps:
     SonarCloud: 'SonarCloud connection 1'
     organization: '$(SonarOrganization)'
     scannerMode: 'MSBuild'
-    projectKey: 'TestToken1'
-    projectName: 'PizzaBoxWebsite'
+    projectKey: '$(SonarProjectKey)'
+    projectName: '$(SonarProjectName)'
     extraProperties: |
       sonar.cs.opencover.reportsPaths="$(Build.ArtifactStagingDirectory)/coverage/*"
       sonar.cs.vstest.reportsPaths="$(Build.ArtifactStagingDirectory)/test/*.trx"
