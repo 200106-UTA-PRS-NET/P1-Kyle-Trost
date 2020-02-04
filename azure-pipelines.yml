@@ -19,14 +19,9 @@ steps:
 - task: SonarCloudPrepare@1
   inputs:
     SonarCloud: 'SonarCloud Connection GitHub'
-    organization: '$(SonarOrganization)'
+    organization: '200106-uta-prs-net'
     scannerMode: 'MSBuild'
     projectKey: '$(SonarProjectKey)'
-    projectName: '$(SonarProjectName)'
-    extraProperties: |
-      sonar.cs.opencover.reportsPaths="$(Build.ArtifactStagingDirectory)/coverage/*"
-      sonar.cs.vstest.reportsPaths="$(Build.ArtifactStagingDirectory)/test/*.trx"
-      sonar.exclusions=**/wwwroot/lib/**/*
 
 
 - script: 
