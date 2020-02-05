@@ -45,9 +45,6 @@ steps:
     workingDirectory: '$(pathtosolution)'
 
 - task: SonarCloudAnalyze@1
-- task: SonarCloudPublish@1
-  inputs:
-    pollingTimeoutSec: '300'
 
 - task: DotNetCoreCLI@2
   inputs:
